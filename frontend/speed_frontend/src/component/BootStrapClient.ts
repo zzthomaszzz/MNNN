@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 "use client"
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 import { useEffect } from "react";
-function useBootStrapClient() {
+function BootstrapClient() {
     useEffect(() => {
         require("bootstrap/dist/js/bootstrap.bundle.min.js");
     }, []);
