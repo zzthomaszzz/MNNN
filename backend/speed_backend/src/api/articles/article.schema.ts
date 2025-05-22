@@ -39,10 +39,10 @@ export class Article {
     @Prop({ required: true })
     summary_brief: string;
 
-    @Prop({ required: true })
+    @Prop({ default: false })
     moderation_pass: boolean;
 
-    @Prop({ required: true })
+    @Prop({ default: false })
     analysis_pass: boolean;
 }
 
