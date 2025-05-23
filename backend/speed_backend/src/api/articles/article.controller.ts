@@ -36,4 +36,20 @@ export class ArticleController {
             );
         }
     }
+
+    @Get('/')
+    async findAll() {
+        try {
+            return this.articleService.findAll();
+        } catch {
+        throw new HttpException(
+            {
+                status: HttpStatus.NOT_FOUND,
+                error: "Not articles found",
+            },
+            HttpStatus.NOT_FOUND,
+            { cause: error },
+            );
+        }
+    }
 }

@@ -17,4 +17,8 @@ export class ArticleService {
         return await this.articleModel.create(createArticleDto);
     }
 
+    async findAll(): Promise<Article[]> {
+        return await this.articleModel.find().exec();
+    }
+
 }
