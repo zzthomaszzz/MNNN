@@ -9,7 +9,6 @@ const NewDiscussion = () => {
   const [pubYear, setPubYear] = useState<number>(0);
   const [doi, setDoi] = useState("");
   const [summary, setSummary] = useState("");
-  const [linkedDiscussion, setLinkedDiscussion] = useState("");
 
   // Handle BibTeX file upload
   const handleBibUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,26 +35,22 @@ const NewDiscussion = () => {
   event.preventDefault();
 
   const payload = {
-    entryType: "article", 
-    citationKey: title.toLowerCase().replace(/\s+/g, "_"), 
-    entryTags: {
       title,
       author: authors.join(" and "),
-      journal: source,
-      year: pubYear.toString(),
+      journal_name: source,
+      publication_date: pubYear.toString(),
       doi,
+      submission_date: new Date(),
       abstract: summary,
-      linked_discussion: linkedDiscussion,
-    },
   };
 
   try {
-    const res = await fetch("http://localhost:3001/bibtex", {
+    const res = await fetch("http://localhost:8082/api/articles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([payload]), 
+      body: JSON.stringify(payload)
     });
 
     if (res.ok) {

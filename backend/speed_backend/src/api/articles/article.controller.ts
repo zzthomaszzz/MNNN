@@ -9,30 +9,32 @@ Post,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './create-article.dto';
-import { error } from 'console';
 
-@Controller('api/articles')
+@Controller('articles')
 export class ArticleController {
     constructor(private readonly articleService: ArticleService) {}
 
-    @Get('/test')
-    test(){
-        return this.articleService.test();
-    }
-
-    @Post("/")
+    @Post()
     async create(@Body() createArticleDto: CreateArticleDto) {
         try {
+            const articleData = {
+                ...createArticleDto,
+                publication_date: createArticleDto.publication_date,
+                submission_date: createArticleDto.submission_date || new Date()
+            };
             await this.articleService.create(createArticleDto);
-            return { message: "Article created successfully"};
-        } catch {
+            return { 
+                statusCode: HttpStatus.CREATED,
+                message: "Article created successfully"};
+        } catch (e){
             throw new HttpException(
                 { 
                     status: HttpStatus.BAD_REQUEST,
                     error: "Article creation failed",
+                    details: e.message
                 },
                 HttpStatus.BAD_REQUEST,
-                {cause: error},
+                {cause: e},
             );
         }
     }
@@ -41,14 +43,15 @@ export class ArticleController {
     async findAll() {
         try {
             return this.articleService.findAll();
-        } catch {
+        } catch(e) {
         throw new HttpException(
             {
                 status: HttpStatus.NOT_FOUND,
                 error: "Not articles found",
+                details:e.message
             },
             HttpStatus.NOT_FOUND,
-            { cause: error },
+            { cause: e},
             );
         }
     }

@@ -13,8 +13,12 @@ export class ArticleService {
         return "Testing for Article Service";
     }
 
-    async create(createArticleDto: CreateArticleDto): Promise<Article> {
-        return await this.articleModel.create(createArticleDto);
+    async create(createArticleDto: CreateArticleDto): Promise<void> {
+        const newArticle=new this.articleModel({
+            ...createArticleDto,
+            status: 'pending',
+        })
+        await newArticle.save();
     }
 
     async findAll(): Promise<Article[]> {
