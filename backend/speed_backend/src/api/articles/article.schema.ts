@@ -44,11 +44,9 @@ export class Article {
     @Prop({ required: true })
     summary_brief: string;
 
-    @Prop({ default: false })
-    moderation_pass: boolean;
+    @Prop({ default: 'pending', enum: ['pending', 'approved', 'rejected'] })
+    status: string;
 
-    @Prop({ default: false })
-    analysis_pass: boolean;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
