@@ -40,8 +40,7 @@ const NewDiscussion = () => {
       journal_name: source,
       publication_date: pubYear.toString(),
       doi,
-      submission_date: new Date(),
-      abstract: summary,
+      summary_brief: summary,
   };
 
   try {
@@ -57,8 +56,8 @@ const NewDiscussion = () => {
       alert("Upload successful!");
     } else {
       const error = await res.json();
-      console.error("Upload failed:", error);
-      alert("Upload failed.");
+      console.error("Upload failed:", JSON.stringify(error, null, 2));
+      alert("Upload failed."+(error.message || "Bad Request"));
     }
   } catch (error) {
     console.error("Request error:", error);
@@ -87,9 +86,10 @@ const NewDiscussion = () => {
       <h1>New Article</h1>
 
       <div className="mb-4">
-        <label>Upload BibTeX File:</label>
+        <label htmlFor="bibUpload">Upload BibTeX File:</label>
         <input
           type="file"
+          id="bibUpload"
           accept=".bib"
           onChange={handleBibUpload}
           className={formStyles.formItem}
@@ -109,13 +109,15 @@ const NewDiscussion = () => {
           }}
         />
 
-        <label htmlFor="author">Authors:</label>
+        <label>Authors:</label>
         {authors.map((author, index) => {
           return (
             <div key={`author ${index}`} className={formStyles.arrayItem}>
+              <label htmlFor={`author-${index}`}>Author {index + 1}</label>
               <input
                 type="text"
                 name="author"
+                id={`author-${index}`}
                 value={author}
                 onChange={(event) => changeAuthor(index, event.target.value)}
                 className={formStyles.formItem}
@@ -187,6 +189,7 @@ const NewDiscussion = () => {
           className={formStyles.formTextArea}
           name="summary"
           value={summary}
+          id="summary"
           onChange={(event) => setSummary(event.target.value)}
         />
         <button className={formStyles.formItem} type="submit">

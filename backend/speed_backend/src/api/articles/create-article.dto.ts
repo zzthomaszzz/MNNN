@@ -10,5 +10,5 @@ export class CreateArticleDto {
 
   // Submission Information
   submission_date?: Date | string
-  summary_brief: string;
+  summary_brief?: string;
 }

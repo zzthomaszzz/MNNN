@@ -6,13 +6,9 @@ const nextConfig: NextConfig = {
   async rewrites(){
     return[{
       source:'/api/articles/:path*',
-      destination: 'http://localhost:8082/api/:path*',
-    },
-  {
-    source:'/api/auth/:path*',
-    destination: '/404',
-  }]
-  }
+      destination: 'http://localhost:8082/api/articles/:path*',
+    }];
+  },
 };
 
 export default nextConfig;
