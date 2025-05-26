@@ -15,6 +15,12 @@ const NewDiscussion = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if(!file.name.endsWith(".bib")){
+      alert("Only .bib format files allow");
+      e.target.value = ""
+      return;
+    }
+
     const text = await file.text();
     const parsed = bibtexParse.toJSON(text);
 
