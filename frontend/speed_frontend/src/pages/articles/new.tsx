@@ -19,6 +19,8 @@ const NewDiscussion = () => {
     summary: false
   });
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
   // Handle BibTeX file upload
   const handleBibUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -92,7 +94,13 @@ const NewDiscussion = () => {
       });
 
       if (res.ok) {
-        alert("Upload successful!");
+        setShowSuccess(true);
+        setTitle("");
+        setAuthors([]);
+        setSource("");
+        setPubYear(0);
+        setDoi("");
+        setSummary("");
       } else {
         const error = await res.json();
         console.error("Upload failed:", JSON.stringify(error, null, 2));
@@ -128,8 +136,7 @@ const NewDiscussion = () => {
   // Return the full form
   return (
     <div className="container">
-      <h1>New Article</h1>
-
+      <h1>New Article</h1>  
       <div className="mb-4">
         <label htmlFor="bibUpload">Upload BibTeX File:</label>
         <input
@@ -258,6 +265,17 @@ const NewDiscussion = () => {
           Submit
         </button>
       </form>
+      {showSuccess && (
+      <div className={formStyles.successMessage}>
+        <p>Congratulations on uploading successfully, please wait for review</p>
+        <button 
+          onClick={() => setShowSuccess(false)}
+          className={formStyles.closeButton}
+        >
+          ×
+        </button>
+      </div>
+    )}
     </div>
   );
 };
