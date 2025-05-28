@@ -34,7 +34,12 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
         <div className="container">
         <h1>Articles Index Page</h1>
         <p>Page containing a table of articles:</p>
-        <SortableTable headers={headers} data={approved_articles} />
+
+        {approved_articles.length === 0 ? (
+            <p>No approved articles found.</p>
+        ) : (
+            <SortableTable headers={headers} data={approved_articles} />
+        )}
         </div>
     );
 };
