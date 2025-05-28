@@ -50,12 +50,18 @@ export const getStaticProps: GetStaticProps<ArticlesProps> = async (_) => {
 
     //Database
     let _data = await fetch("http://localhost:8082/api/articles");
-    if (_data){
-        console.log(_data.json());
-    }
+    const _post = await _data.json();
+    
+    {_post.map((post: any) => (
+        console.log(post)
+    ))}
+
 
     return {
         props: { articles },
+
+
+
     };
 };
 
