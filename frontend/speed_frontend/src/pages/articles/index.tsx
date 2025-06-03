@@ -1,16 +1,15 @@
 import { GetStaticProps, NextPage } from "next";
 import SortableTable from "../../components/table/SortableTable";
-import data from "../../utils/dummydata";
 
 interface ArticlesInterface {
     id: string;
     title: string;
-    authors: string;
-    source: string;
-    pubyear: string;
+    author: string;
+    journal_name: string;
+    publication_date: Date;
     doi: string;
-    claim: string;
-    evidence: string;
+    summary_brief: string;
+    status: string;
 }
 
 type ArticlesProps = { articles: ArticlesInterface[] };
@@ -18,41 +17,52 @@ type ArticlesProps = { articles: ArticlesInterface[] };
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     const headers: { key: keyof ArticlesInterface; label: string }[] = [
         { key: "title", label: "Title" },
-        { key: "authors", label: "Authors" },
-        { key: "source", label: "Source" },
-        { key: "pubyear", label: "Publication Year" },
+        { key: "author", label: "Author" },
+        { key: "journal_name", label: "Journal Name" },
+        { key: "publication_date", label: "Publication Date" },
         { key: "doi", label: "DOI" },
-        { key: "claim", label: "Claim" },
-        { key: "evidence", label: "Evidence" },
+        { key: "summary_brief", label: "Summary" },
     ];
+
+    const approved_articles: ArticlesInterface[] = articles.filter(
+        (article) => article.status === "approved");
 
     return (
         <div className="container">
         <h1>Articles Index Page</h1>
         <p>Page containing a table of articles:</p>
-        <SortableTable headers={headers} data={articles} />
+
+        {approved_articles.length === 0 ? (
+            <p>No approved articles found.</p>
+        ) : (
+            <SortableTable headers={headers} data={approved_articles} />
+        )}
         </div>
     );
 };
 
 export const getStaticProps: GetStaticProps<ArticlesProps> = async (_) => {
 // Map the data to ensure all articles have consistent property names
-    const articles = data.map((article) => ({
-        id: article.id ?? article._id,
-        title: article.title,
-        authors: article.authors,
-        source: article.source,
-        pubyear: article.pubyear,
-        doi: article.doi,
-        claim: article.claim,
-        evidence: article.evidence,
-    }));
 
     //Database
     let _data = await fetch("http://localhost:8082/api/articles");
-    if (_data){
-        console.log(_data.json());
-    }
+    const _post = await _data.json();
+
+    {_post.map((post: any) => (
+        console.log(post)
+    ))}
+
+    const articles = _post.map((article: any) => ({
+    id: article.id ?? article._id,
+    title: article.title,
+    author: article.author,
+    journal_name: article.journal_name,
+    publication_date: article.publication_date,
+    doi: article.doi,
+    summary_brief: article.summary_brief,
+    status: article.status,
+    }));
+
 
     return {
         props: { articles },

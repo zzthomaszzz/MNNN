@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Date } from 'mongoose';
 
 export class CreateArticleDto {

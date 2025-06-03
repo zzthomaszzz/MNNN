@@ -10,15 +10,13 @@ export class Article {
     // Articles Information
     @Prop({ required: true })
     title: string;
-    
+
     @Prop({ required: true })
     author: string;
     
     @Prop({ required: true })
     journal_name: string;
 
-    //Removed the required property for testing purposes
-    // @Prop({ type: Date, required: true })
     @Prop({type: Date })
     publication_date: Date;
 
@@ -35,9 +33,6 @@ export class Article {
     doi: string;
 
     // Submission Information
-
-    //Removed the required property for testing purposes
-    // @Prop({ type: Date, required: true })
     @Prop({ type: Date })
     submission_date: Date;
 
