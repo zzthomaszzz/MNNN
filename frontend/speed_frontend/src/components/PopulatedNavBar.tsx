@@ -15,6 +15,7 @@ Articles <IoMdArrowDropdown />
 <NavDropdown>
 <NavItem route="/articles">View articles</NavItem>
 <NavItem route="/articles/new">Submit new</NavItem>
+<NavItem >Pending articles</NavItem>
 </NavDropdown>
 </NavItem>
 </NavBar>
